@@ -1,63 +1,82 @@
 / Emily_Profile_Website.jsx
-<span className="px-4 py-1 bg-pink-600 text-white rounded-full font-semibold">Elephants 🐘</span>
+// Single-file React component (default export) using Tailwind CSS
+// Soccer-focused version with balanced color scheme
+
+import React from 'react';
+
+export default function EmilyProfile() {
+const profileImage = '/IMG_3510.jpeg';
+
+const friends = [
+'Alison','Lauren','Charlotte','Bella','Jazmine','Oriana','Ella','Kaira','Scarlett','Eve',
+'Georgie','Nour','Eliana','Marin','Sarina','Anastasia','Heer','Flora','Anna','Ariana',
+'Matilda','Kiara','Chloe'
+];
+
+return (
+<div className="min-h-screen bg-gradient-to-b from-green-50 to-white text-gray-800 p-6">
+<div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+<header className="flex flex-col items-center text-center gap-4 p-8 bg-gradient-to-b from-green-500 to-green-300">
+<img
+src={profileImage}
+alt="Emily profile"
+className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-2xl"
+/>
+<h1 className="text-5xl font-extrabold text-white drop-shadow">Emily</h1>
+<p className="text-white/90 font-medium">Scorpio ♏ • Born November 20</p>
+<div className="flex flex-wrap gap-3 justify-center mt-3">
+<span className="px-4 py-1 bg-green-700 text-white rounded-full font-bold">#7</span>
+<span className="px-4 py-1 bg-white text-green-600 rounded-full font-semibold">Soccer Star ⚽</span>
+<span className="px-4 py-1 bg-green-600 text-white rounded-full font-semibold">Elephants 🐘</span>
 </div>
 </header>
 
 <main className="grid grid-cols-1 md:grid-cols-3 gap-6 p-8">
 <section className="md:col-span-2 space-y-6">
-<div className="bg-pink-50 rounded-xl p-6 border border-pink-200 shadow">
-<h2 className="text-3xl font-bold text-pink-700">About Emily</h2>
-<p className="mt-4 text-pink-800 leading-relaxed">Emily is short with brown wavy hair and is a passionate multi-sport athlete. She loves playing soccer, hockey, ski racing, tennis, and volleyball. Energetic and playful, Emily always shines in her lucky number <span className="font-bold">7</span>.</p>
+<div className="bg-green-50 rounded-xl p-6 border border-green-200 shadow">
+<h2 className="text-3xl font-bold text-green-700">About Emily</h2>
+<p className="mt-4 text-gray-700 leading-relaxed">Emily is a passionate multi-sport athlete with a strong love for soccer. She also enjoys hockey, tennis, volleyball, and ski racing. Energetic and competitive, Emily always brings her best to the field wearing her lucky number <span className="font-bold">7</span>.</p>
 </div>
 
-<div className="bg-pink-50 rounded-xl p-6 border border-pink-200 shadow">
-<h3 className="text-2xl font-bold text-pink-700">Sports</h3>
+<div className="bg-green-50 rounded-xl p-6 border border-green-200 shadow">
+<h3 className="text-2xl font-bold text-green-700">Sports</h3>
 <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
 {['Soccer','Hockey','Ski Racing','Tennis','Volleyball'].map((s) => (
-<li key={s} className="flex items-center gap-3 p-3 bg-pink-200 rounded-lg shadow-sm">
-<span className="w-9 h-9 rounded-full flex items-center justify-center bg-pink-500 text-white font-bold">{s[0]}</span>
-<span className="font-semibold text-pink-800">{s}</span>
+<li key={s} className="flex items-center gap-3 p-3 bg-green-100 rounded-lg shadow-sm">
+<span className="w-9 h-9 rounded-full flex items-center justify-center bg-green-400 text-white font-bold">{s[0]}</span>
+<span className="font-semibold text-green-900">{s}</span>
 </li>
 ))}
 </ul>
 </div>
 
-<div className="bg-pink-50 rounded-xl p-6 border border-pink-200 shadow">
-<h3 className="text-2xl font-bold text-pink-700">Ski Racing Stats</h3>
-<div className="mt-4 grid grid-cols-2 gap-4">
-<div className="p-4 rounded-lg bg-pink-200 text-center shadow">
-<p className="text-sm text-pink-700">Top Speed</p>
-<p className="text-2xl font-extrabold text-pink-900">74 km/h</p>
-</div>
-<div className="p-4 rounded-lg bg-pink-200 text-center shadow">
-<p className="text-sm text-pink-700">Races</p>
-<p className="text-2xl font-extrabold text-pink-900">12</p>
-</div>
-</div>
+<div className="bg-green-50 rounded-xl p-6 border border-green-200 shadow">
+<h3 className="text-2xl font-bold text-green-700">Soccer Highlights</h3>
+<p className="mt-3 text-gray-700">Emily’s favorite sport is soccer. She’s known for her speed, teamwork, and dedication on the field. Whether playing midfield or forward, she gives it her all in every match.</p>
 </div>
 </section>
 
 <aside className="space-y-6">
-<div className="bg-pink-50 rounded-xl p-6 border border-pink-200 shadow">
-<h3 className="text-2xl font-bold text-pink-700">Friends</h3>
+<div className="bg-green-50 rounded-xl p-6 border border-green-200 shadow">
+<h3 className="text-2xl font-bold text-green-700">Friends</h3>
 <ul className="mt-4 grid grid-cols-2 gap-3">
 {friends.map((f) => (
-<li key={f} className="flex items-center gap-3 p-2 rounded-md bg-pink-100 hover:bg-pink-200">
-<div className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center text-white font-bold">{f[0]}</div>
-<span className="text-pink-800 font-medium">{f}</span>
+<li key={f} className="flex items-center gap-3 p-2 rounded-md bg-green-100 hover:bg-green-200">
+<div className="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center text-white font-bold">{f[0]}</div>
+<span className="text-green-900 font-medium">{f}</span>
 </li>
 ))}
 </ul>
 </div>
 
-<div className="bg-pink-50 rounded-xl p-6 border border-pink-200 shadow">
-<h4 className="text-xl font-bold text-pink-700">Elephant Corner 🐘</h4>
-<p className="mt-3 text-pink-800">Emily adores elephants — this section could feature cute pics, facts, or links to elephant charities.</p>
+<div className="bg-green-50 rounded-xl p-6 border border-green-200 shadow">
+<h4 className="text-xl font-bold text-green-700">Elephant Corner 🐘</h4>
+<p className="mt-3 text-gray-700">Emily adores elephants — this section could feature cute pics, facts, or links to elephant charities.</p>
 </div>
 </aside>
 </main>
 
-<footer className="p-6 text-center text-pink-700 font-medium bg-pink-200">Made with 💗 for Emily • Put <code className="bg-white rounded px-1">IMG_3510.jpeg</code> in the <code className="bg-white rounded px-1">public/</code> folder.</footer>
+<footer className="p-6 text-center text-green-700 font-medium bg-green-100">Made with 💚 for Emily • Put <code className="bg-white rounded px-1">IMG_3510.jpeg</code> in the <code className="bg-white rounded px-1">public/</code> folder.</footer>
 </div>
 </div>
 );
