@@ -2,176 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Emily's Profile</title>
   <style>
     body {
-      background-color: #ffcce6;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      background: pink;
+      color: #333;
       text-align: center;
     }
     header {
-      background-color: #ff3399;
-      color: white;
-      padding: 30px;
+      background: white;
+      color: hotpink;
+      padding: 20px;
+      font-size: 2em;
+      font-weight: bold;
     }
     nav {
-      background: white;
-      padding: 15px;
+      margin: 20px;
     }
-    nav a {
-      text-decoration: none;
-      background-color: #ff66b2;
+    nav button {
+      background: hotpink;
       color: white;
-      padding: 10px 15px;
+      border: none;
+      padding: 10px 20px;
       margin: 5px;
+      font-size: 1em;
       border-radius: 8px;
-      font-weight: bold;
-      display: inline-block;
       cursor: pointer;
     }
+    nav button:hover {
+      background: deeppink;
+    }
     section {
-      background: white;
-      margin: 20px auto;
+      display: none;
       padding: 20px;
-      border-radius: 12px;
-      max-width: 600px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-      text-align: left;
+      background: white;
+      margin: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    h2 {
-      color: #ff3399;
-    }
-    ul {
-      padding-left: 20px;
-    }
-    li {
-      margin: 6px 0;
+    #home {
+      display: block;
     }
     img {
+      max-width: 200px;
       border-radius: 50%;
-      margin-top: 10px;
-      border: 4px solid white;
+      margin-top: 15px;
     }
-    /* hide pages by default */
-    .page {
-      display: none;
-    }
-    .active {
-      display: block;
+    h2 {
+      color: hotpink;
     }
   </style>
 </head>
 <body>
-  <!-- Home Page -->
-  <div id="home" class="page active">
-    <header>
-      <img src="020725_DXSFMSBlueGirlsHockey_NCDS-60%20(1).jpg" alt="Emily's Profile Picture" width="150">
-      <h1>Emily's Profile</h1>
-      <p><strong>NEFC | BSC | BBTS | Brookline Hockey</strong></p>
-    </header>
-
-    <nav>
-      <a onclick="showPage('sports')">Sports</a>
-      <a onclick="showPage('travel')">Travel</a>
-      <a onclick="showPage('interests')">Interests</a>
-      <a onclick="showPage('foods')">Foods</a>
-      <a onclick="showPage('friends')">Friends</a>
-    </nav>
-
-    <section id="sports" class="subpage">
-      <h2>Sports</h2>
-      <ul>
-        <li>Soccer: Center Back</li>
-        <li>Hockey: Forward</li>
-        <li>Tennis</li>
-        <li>Skiing</li>
-      </ul>
-    </section>
-
-    <section id="travel" class="subpage">
-      <h2>Travel</h2>
-      <p>Emily loves exploring the world. She has already been to 11 countries:</p>
-      <ul>
-        <li>Spain</li>
-        <li>Portugal</li>
-        <li>Switzerland</li>
-        <li>Germany</li>
-        <li>United Kingdom</li>
-        <li>Italy</li>
-        <li>France</li>
-        <li>India</li>
-        <li>United States</li>
-        <li>Ecuador</li>
-      </ul>
-    </section>
-
-    <section id="interests" class="subpage">
-      <h2>Interests</h2>
-      <ul>
-        <li>Loves the color pink</li>
-        <li>Minimalist elephants</li>
-        <li>Playing sports</li>
-      </ul>
-    </section>
-
-    <section id="foods" class="subpage">
-      <h2>Favorite Foods</h2>
-      <ul>
-        <li>Pizza</li>
-        <li>Samosas</li>
-        <li>Steak Frites</li>
-        <li>Chocolate</li>
-      </ul>
-    </section>
-  </div>
-
-  <!-- Friends Page -->
-  <div id="friends" class="page">
-    <header>
-      <h1>Emily's Friends</h1>
-    </header>
-
-    <nav>
-      <a onclick="showPage('home')">Back to Home</a>
-    </nav>
-
-    <section>
-      <h2>Friends List</h2>
-      <ul>
-        <li>Alison</li>
-        <li>Lauren</li>
-        <li>Charlotte</li>
-        <li>Bella</li>
-        <li>Jazmine</li>
-        <li>Oriana</li>
-        <li>Ella</li>
-        <li>Kaira</li>
-        <li>Scarlett</li>
-        <li>Eve</li>
-        <li>Georgie</li>
-        <li>Nour</li>
-        <li>Eliana</li>
-        <li>Marin</li>
-        <li>Sarina</li>
-        <li>Anastasia</li>
-        <li>Heer</li>
-        <li>Flora</li>
-        <li>Anna</li>
-        <li>Ariana</li>
-        <li>Matilda</li>
-        <li>Kiara</li>
-        <li>Chloe</li>
-      </ul>
-    </section>
-  </div>
-
+  <header>Emily's Profile</header>
+  
+  <nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('friends')">Friends</button>
+    <button onclick="showPage('sports')">Sports</button>
+    <button onclick="showPage('travel')">Travel</button>
+    <button onclick="showPage('interests')">Interests</button>
+    <button onclick="showPage('siblings')">Siblings</button>
+  </nav>
+  
+  <!-- Home -->
+  <section id="home">
+    <h2>Welcome to Emily's Page</h2>
+    <img src="IMG_3510.jpeg" alt="Emily's Profile Picture">
+    <p>Bio: NEFC, BSC, BBTS, Brookline Hockey</p>
+  </section>
+  
+  <!-- Friends -->
+  <section id="friends">
+    <h2>Emily's Friends</h2>
+    <p>Alison, Lauren, Charlotte, Bella, Jazmine, Oriana, Ella, Kaira, Scarlett, Eve, Georgie, Nour, Eliana, Marin, Sarina, Anastasia, Heer, Flora, Anna, Ariana, Matilda, Kiara, Chloe</p>
+  </section>
+  
+  <!-- Sports -->
+  <section id="sports">
+    <h2>Sports</h2>
+    <p>Emily plays forward in hockey and center back in soccer.</p>
+    <p>Her sports number is 7.</p>
+  </section>
+  
+  <!-- Travel -->
+  <section id="travel">
+    <h2>Travel</h2>
+    <p>Emily loves to travel! She has been to 11 countries:</p>
+    <p>Spain, Portugal, Switzerland, Germany, UK, Italy, France, India, USA, Ecuador</p>
+  </section>
+  
+  <!-- Interests -->
+  <section id="interests">
+    <h2>Interests</h2>
+    <p>Favorite foods: Pizza, samosas, steak frites, and chocolate.</p>
+    <p>She also likes elephants, but not too many of them.</p>
+  </section>
+  
+  <!-- Siblings -->
+  <section id="siblings">
+    <h2>Siblings</h2>
+    <p>Emily has a sister named Daphne and a brother named Ethan.</p>
+    <p>Her brother Ethan is a redhead and looks like a leprechaun.</p>
+    <p>Her sister Daphne… well, Emily likes to think she looks prettier than her sister 😉</p>
+  </section>
+  
   <script>
     function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
+      document.querySelectorAll("section").forEach(sec => sec.style.display = "none");
+      document.getElementById(pageId).style.display = "block";
     }
   </script>
 </body>
