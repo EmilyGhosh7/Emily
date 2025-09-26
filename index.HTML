@@ -1,0 +1,81 @@
+// Emily_Profile_Website.jsx
+<p className="mt-2">Scorpio ♏ (Nov 20)</p>
+</div>
+<div className="p-3 rounded-lg border border-pink-50">
+<h3 className="text-sm font-medium">Fun Fact</h3>
+<p className="mt-2">Huge elephant lover — you might see elephant motifs on Emily's gear.</p>
+</div>
+</div>
+
+<div className="mt-6">
+<h3 className="text-xl font-semibold text-pink-600">Sports</h3>
+<ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+{['Soccer','Hockey','Ski Racing','Tennis','Volleyball'].map((s) => (
+<li key={s} className="flex items-center gap-3 p-2 bg-pink-50 rounded">
+<span className="w-9 h-9 rounded-full flex items-center justify-center bg-pink-200 text-pink-800 font-bold">{s[0]}</span>
+<span className="font-medium">{s}</span>
+</li>
+))}
+</ul>
+</div>
+
+</div>
+
+<div className="mt-6 bg-white rounded-xl p-5 shadow-sm">
+<h3 className="text-2xl font-semibold text-pink-600">Ski Racing Stats (sample)</h3>
+<p className="mt-2 text-gray-600">Season highlights and results can go here. Replace with real data or link to a results page.</p>
+<div className="mt-4 grid grid-cols-2 gap-3">
+<div className="p-3 rounded-md border">
+<p className="text-sm text-gray-500">Top Speed</p>
+<p className="font-bold mt-1">74 km/h</p>
+</div>
+<div className="p-3 rounded-md border">
+<p className="text-sm text-gray-500">Races</p>
+<p className="font-bold mt-1">12</p>
+</div>
+</div>
+</div>
+
+</section>
+
+<aside>
+<div className="bg-white rounded-xl p-5 shadow-sm">
+<h3 className="text-xl font-semibold text-pink-600">Friends</h3>
+<p className="mt-2 text-gray-600 text-sm">Emily's circle of friends:</p>
+<ul className="mt-3 grid grid-cols-2 gap-2 text-gray-700">
+{friends.map((f) => (
+<li key={f} className="flex items-center gap-2 p-2 rounded-md hover:bg-pink-50">
+<div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-700 font-semibold">{f[0]}</div>
+<span>{f}</span>
+</li>
+))}
+</ul>
+
+<div className="mt-5">
+<h4 className="text-sm font-medium">Contact</h4>
+<p className="text-xs text-gray-500 mt-1">This is a sample profile site. Add an email or contact form here if you like.</p>
+</div>
+
+<div className="mt-5">
+<h4 className="text-sm font-medium">Theme</h4>
+<div className="mt-2 flex items-center gap-2">
+<div className="w-8 h-8 rounded-full bg-pink-300 border" />
+<div className="w-8 h-8 rounded-full bg-gray-200 border" />
+</div>
+</div>
+
+</div>
+
+<div className="mt-4 bg-white rounded-xl p-5 shadow-sm">
+<h4 className="text-lg font-semibold text-pink-600">Elephant Corner 🐘</h4>
+<p className="mt-2 text-gray-600">Tiny gallery idea or links to elephant charities. Add photos or external links here.</p>
+</div>
+</aside>
+
+</main>
+
+<footer className="p-6 text-center text-sm text-gray-500">Made with 💗 for Emily • Put <code className="rounded bg-gray-100 px-1">IMG_3510.jpeg</code> in the <code className="rounded bg-gray-100 px-1">public/</code> folder for the picture to load.</footer>
+</div>
+</div>
+);
+}
