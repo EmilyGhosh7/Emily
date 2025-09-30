@@ -3,105 +3,57 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Emily's Profile</title>
+<title>Emily's Tennis Profile</title>
 <style>
   :root{
-    --pink:#ff66b2;
-    --hotpink:#ff3399;
-    --soft-yellow:#fff5cc;
+    --green:#228B22;
+    --lightgreen:#dfffdf;
+    --yellow:#f7e94d;
   }
-  html,body{height:100%;}
   body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background: linear-gradient(to bottom, #ffcce6, #fff, var(--soft-yellow));
+    background: linear-gradient(to bottom, var(--lightgreen), white);
     color:#222;
     text-align:center;
     overflow-x:hidden;
   }
-
-  /* header + nav */
   header{
-    background: white;
-    color:var(--hotpink);
-    padding:20px 12px;
+    background: var(--green);
+    color:white;
+    padding:20px;
     font-weight:700;
     font-size:28px;
-    border-bottom:6px solid var(--pink);
-    position:relative;
-    z-index:3;
   }
   nav{
     margin:14px 0;
-    z-index:3;
-    position:relative;
   }
   nav .btn{
-    background:var(--hotpink);
-    color:white;
+    background:var(--yellow);
+    color:#222;
     border:none;
     padding:10px 16px;
     margin:6px;
     border-radius:10px;
     font-weight:700;
     cursor:pointer;
-    box-shadow:0 3px 0 rgba(0,0,0,0.06);
   }
-  nav .btn:hover{background:#e02287;}
-
-  /* pages */
-  .page{ display:none; padding:24px; max-width:900px; margin:22px auto; background:white; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.08); position:relative; z-index:2; text-align:left; }
-  .page.active{ display:block; }
-  .page h2{ color:var(--hotpink); margin-top:0; margin-bottom:8px; }
-
-  /* elephant + sports icons as decorative SVGs (low-opacity) */
-  .decor {
-    position:fixed;
-    top:0; left:0; right:0; bottom:0;
-    pointer-events:none;
-    z-index:1;
-  }
-  .decor svg{ opacity:0.08; }
-
-  /* small screen tweaks */
-  @media (max-width:640px){
-    header{font-size:22px;}
-    nav .btn{padding:8px 12px;}
-    .page{ margin:12px; padding:14px; border-radius:10px; }
-  }
-
-  /* Game canvas */
-  #pong {
-    display:block;
-    margin:16px auto;
-    background:#fff;
-    border-radius:8px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.12);
-    max-width:100%;
-  }
-
-  /* scoreboard */
-  .scoreboard { font-weight:700; color:var(--hotpink); margin-top:4px; }
-  .scoreboard span { display:inline-block; min-width:40px; font-size:20px; background:#fff1f7; padding:6px 10px; border-radius:8px; margin:0 6px; border:1px solid rgba(0,0,0,0.04); }
-
-  /* small accent stripes like jersey */
-  body::before, body::after{
-    content:"";
-    position:fixed;
-    top:0;
-    bottom:0;
-    width:18px;
-    background:linear-gradient(var(--hotpink), #ffcce6, white);
-    opacity:0.35;
-    z-index:0;
-  }
-  body::before{ left:0; }
-  body::after{ right:0; }
+  nav .btn:hover{background:#e5d63f;}
+  .page{display:none;padding:24px;max-width:900px;margin:22px auto;background:white;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,0.1);text-align:left;}
+  .page.active{display:block;}
+  .page h2{color:var(--green);margin-top:0;}
+  /* tennis ball decor */
+  .decor svg{position:fixed;opacity:0.08;z-index:0;}
+  .decor .ball1{left:20px;top:30px;width:120px;height:120px;}
+  .decor .ball2{right:20px;bottom:30px;width:150px;height:150px;}
+  /* Pong canvas */
+  #pong{display:block;margin:16px auto;background:white;border:2px solid var(--green);border-radius:8px;}
+  .scoreboard{font-weight:700;color:var(--green);margin-top:4px;}
+  .scoreboard span{display:inline-block;min-width:40px;font-size:20px;background:#f4ffe6;padding:6px 10px;border-radius:8px;margin:0 6px;}
 </style>
 </head>
 <body>
-  <header>Emily's Profile</header>
-
+  <header>Emily's Tennis Profile</header>
   <nav>
     <button class="btn" onclick="showPage('home')">Home</button>
     <button class="btn" onclick="showPage('friends')">Friends</button>
@@ -111,307 +63,119 @@
     <button class="btn" onclick="showPage('game')">Ping Pong Game</button>
   </nav>
 
-  <!-- decorative SVG icons (low opacity) -->
-  <div class="decor" aria-hidden="true">
-    <!-- elephant pattern bottom-left -->
-    <svg style="position:fixed;left:12px;bottom:12px;width:220px;height:120px;" viewBox="0 0 200 100" preserveAspectRatio="xMinYMin meet">
-      <g fill="#ff66b2"><path d="M35 60c-6 0-11 5-11 11v6h9c0 6 5 11 11 11s11-5 11-11v-6h-9c0-6-5-11-11-11z" /></g>
-      <g fill="#f8b5d3"><ellipse cx="90" cy="60" rx="40" ry="25" /></g>
-      <g fill="#ffcce6"><circle cx="150" cy="40" r="18"/></g>
-    </svg>
-
-    <!-- soccer ball top-right -->
-    <svg style="position:fixed;right:40px;top:40px;width:120px;height:120px;" viewBox="0 0 64 64" preserveAspectRatio="xMinYMin meet">
-      <circle cx="32" cy="32" r="30" fill="#fff" stroke="#ddd" stroke-width="2"/>
-      <g fill="#ff66b2"><circle cx="32" cy="32" r="6"/></g>
-    </svg>
-
-    <!-- tennis ball center-left -->
-    <svg style="position:fixed;left:20%;top:35%;width:80px;height:80px;transform:translateY(-30px);" viewBox="0 0 64 64">
-      <circle cx="32" cy="32" r="30" fill="#f6ffb3"/>
+  <!-- tennis ball decorations -->
+  <div class="decor">
+    <svg class="ball1" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="30" fill="#f7e94d"/>
       <path d="M10 32c8-8 24-8 24-8" stroke="#fff" stroke-width="3" fill="none"/>
       <path d="M54 32c-8 8-24 8-24 8" stroke="#fff" stroke-width="3" fill="none"/>
     </svg>
-
-    <!-- hockey puck bottom-right -->
-    <svg style="position:fixed;right:12px;bottom:40px;width:140px;height:60px;transform:scaleX(1);" viewBox="0 0 140 60" preserveAspectRatio="xMinYMin meet">
-      <ellipse cx="70" cy="30" rx="60" ry="22" fill="#111" opacity="0.15"/>
-    </svg>
-
-    <!-- ski gate (two poles + flag) -->
-    <svg style="position:fixed;left:60%;top:12%;width:70px;height:140px;opacity:0.12;" viewBox="0 0 20 60" preserveAspectRatio="xMinYMin meet">
-      <rect x="1" y="2" width="2" height="56" fill="#ff66b2"></rect>
-      <rect x="17" y="2" width="2" height="56" fill="#ff66b2"></rect>
-      <rect x="3.5" y="10" width="13" height="8" rx="1" fill="#ffcce6"></rect>
+    <svg class="ball2" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="30" fill="#f7e94d"/>
+      <path d="M10 32c8-8 24-8 24-8" stroke="#fff" stroke-width="3" fill="none"/>
+      <path d="M54 32c-8 8-24 8-24 8" stroke="#fff" stroke-width="3" fill="none"/>
     </svg>
   </div>
 
-  <!-- Pages -->
-  <div id="home" class="page active" role="main" aria-label="home page">
+  <!-- pages -->
+  <div id="home" class="page active">
     <h2>Welcome to Emily's Page</h2>
     <p><strong>Bio:</strong> NEFC, BSC, BBTS, Brookline Hockey</p>
-    <p><strong>Favorite Foods:</strong> Pizza, Samosas, Steak Frites</p>
-    <p><strong>Chocolate:</strong> She loves chocolate a lot.</p>
-    <p><strong>Interests:</strong> Soccer, Hockey, Tennis, Ski Racing — and she really likes elephants.</p>
   </div>
 
-  <div id="friends" class="page" role="region" aria-label="friends">
+  <div id="friends" class="page">
     <h2>Friends</h2>
-    <p>Alison, Lauren, Charlotte, Bella, Jazmine, Oriana, Ella, Kaira, Scarlett, Eve, Georgie, Nour, Eliana, Marin, Sarina, Anastasia, Heer, Flora, Anna, Ariana, Matilda, Kiara, Chloe</p>
+    <p>Alison, Lauren, Charlotte, Bella, Jazmine, Oriana, Ella, Kaira, Scarlett, Eve, Georgie, Nour, Eliana, Marin, Sarina, Anastasia, Flora, Anna, Ariana, Matilda, Kiara, Chloe</p>
   </div>
 
-  <div id="sports" class="page" role="region" aria-label="sports">
+  <div id="sports" class="page">
     <h2>Sports</h2>
-    <p>Soccer (center back), Hockey (forward), Tennis, Ski Racing.</p>
+    <p>Soccer, Hockey, Tennis, Ski Racing</p>
     <p>Sports number: <strong>7</strong></p>
   </div>
 
-  <div id="siblings" class="page" role="region" aria-label="siblings">
+  <div id="siblings" class="page">
     <h2>Siblings</h2>
     <ul>
-      <li>Daphne</li>
-      <li>Ethan</li>
+      <li>Daphne — 15</li>
+      <li>Ethan — 20</li>
     </ul>
   </div>
 
-  <div id="travel" class="page" role="region" aria-label="travel">
+  <div id="travel" class="page">
     <h2>Travel</h2>
     <p>Visited: Spain, Portugal, Switzerland, Germany, United Kingdom, Italy, France, India, United States, Ecuador</p>
   </div>
 
-  <div id="game" class="page" role="region" aria-label="ping pong game">
+  <div id="game" class="page">
     <h2>Mini Ping Pong</h2>
-    <div class="scoreboard">You: <span id="playerScore">0</span> &nbsp; — &nbsp; Computer: <span id="computerScore">0</span></div>
-    <canvas id="pong" width="700" height="420" aria-label="ping pong game canvas"></canvas>
-    <p style="margin-top:8px; font-size:13px; color:#666;">Move your paddle (left) with mouse or touch. Arrow keys also work.</p>
+    <div class="scoreboard">You: <span id="playerScore">0</span> — Computer: <span id="computerScore">0</span></div>
+    <canvas id="pong" width="700" height="420"></canvas>
+    <p>Use your mouse, touch, or arrow keys to move the left paddle.</p>
   </div>
 
 <script>
-  // -------------------------
-  // Page navigation
-  // -------------------------
-  function showPage(id){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    const el = document.getElementById(id);
-    if(el) el.classList.add('active');
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='game') startGame(); else stopGame();
+}
 
-    // start/stop game when switching pages
-    if(id === 'game') startGame();
-    else stopGame();
-  }
+// Pong Game
+const canvas=document.getElementById('pong');
+const ctx=canvas.getContext('2d');
+let running=false,rafId,paused=false;
+let playerScore=0,computerScore=0;
+const playerScoreEl=document.getElementById('playerScore');
+const computerScoreEl=document.getElementById('computerScore');
+const paddleW=12,paddleH=90;
+let player={x:10,y:(canvas.height-paddleH)/2,w:paddleW,h:paddleH};
+let comp={x:canvas.width-paddleW-10,y:(canvas.height-paddleH)/2,w:paddleW,h:paddleH};
+let ball={x:canvas.width/2,y:canvas.height/2,r:9,vx:4,vy:3};
 
-  // -------------------------
-  // Ping Pong Game (robust)
-  // -------------------------
-  const canvas = document.getElementById('pong');
-  const ctx = canvas.getContext && canvas.getContext('2d');
-
-  // Ensure canvas exists
-  if(!canvas || !ctx){
-    console.warn('Canvas not available – game disabled.');
-  }
-
-  // Game state
-  let rafId = null;
-  let running = false;
-  let playerScore = 0;
-  let computerScore = 0;
-
-  // paddles and ball
-  const paddleWidth = 12;
-  const paddleHeight = 90;
-  let player = { x: 10, y: (canvas.height - paddleHeight)/2, w: paddleWidth, h: paddleHeight };
-  let computer = { x: canvas.width - paddleWidth - 10, y: (canvas.height - paddleHeight)/2, w: paddleWidth, h: paddleHeight };
-  let ball = { x: canvas.width/2, y: canvas.height/2, r: 9, vx: 4*(Math.random()>0.5?1:-1), vy: 3*(Math.random()>0.5?1:-1) };
-
-  // DOM score elements
-  const playerScoreEl = document.getElementById('playerScore');
-  const computerScoreEl = document.getElementById('computerScore');
-
-  // Draw helpers
-  function clear() { ctx.clearRect(0,0,canvas.width,canvas.height); }
-  function drawRect(x,y,w,h, color){ ctx.fillStyle = color; ctx.fillRect(x,y,w,h); }
-  function drawCircle(x,y,r,color){ ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); }
-  function drawNet(){
-    ctx.fillStyle = 'rgba(255,51,153,0.06)';
-    const step = 12;
-    for(let i=0;i<canvas.height;i+=step){
-      ctx.fillRect(canvas.width/2 -1, i+3, 2, 8);
-    }
-  }
-
-  // reset functions
-  function resetBall(direction){
-    ball.x = canvas.width/2;
-    ball.y = canvas.height/2;
-    const speed = 4;
-    const angle = (Math.random()*0.6 - 0.3); // slight angle
-    ball.vx = speed * (direction || (Math.random()>0.5?1:-1));
-    ball.vy = speed * (0.8 + Math.random()*0.8) * (Math.random()>0.5?1:-1);
-  }
-
-  // update loop
-  function update(){
-    // move ball
-    ball.x += ball.vx;
-    ball.y += ball.vy;
-
-    // top/bottom bounce
-    if(ball.y - ball.r <= 0 || ball.y + ball.r >= canvas.height){
-      ball.vy *= -1;
-      // clamp inside
-      if(ball.y - ball.r < 0) ball.y = ball.r;
-      if(ball.y + ball.r > canvas.height) ball.y = canvas.height - ball.r;
-    }
-
-    // player paddle collision
-    if(ball.x - ball.r <= player.x + player.w){
-      if(ball.y >= player.y && ball.y <= player.y + player.h){
-        // reflect with slight speed increase
-        ball.vx = Math.abs(ball.vx) * 1.05;
-        // adjust vy based on where it hits the paddle
-        const delta = ball.y - (player.y + player.h/2);
-        ball.vy += delta * 0.07;
-        ball.x = player.x + player.w + ball.r; // avoid sticking
-      } else {
-        // computer scores
-        computerScore++;
-        computerScoreEl.textContent = computerScore;
-        pauseAndReset(-1); // launch towards player next
-      }
-    }
-
-    // computer paddle collision
-    if(ball.x + ball.r >= computer.x){
-      if(ball.y >= computer.y && ball.y <= computer.y + computer.h){
-        // reflect
-        ball.vx = -Math.abs(ball.vx) * 1.03;
-        const delta = ball.y - (computer.y + computer.h/2);
-        ball.vy += delta * 0.06;
-        ball.x = computer.x - ball.r;
-      } else {
-        // player scores
-        playerScore++;
-        playerScoreEl.textContent = playerScore;
-        pauseAndReset(1); // launch towards computer next
-      }
-    }
-
-    // simple computer AI: follow ball with limited speed
-    const targetY = ball.y - computer.h/2;
-    const diff = targetY - computer.y;
-    computer.y += Math.sign(diff) * Math.min(Math.abs(diff), 4 + Math.abs(ball.vx)*0.2); // harder as ball speeds
-
-    // clamp paddles inside canvas
-    player.y = Math.max(0, Math.min(canvas.height - player.h, player.y));
-    computer.y = Math.max(0, Math.min(canvas.height - computer.h, computer.y));
-  }
-
-  function render(){
-    clear();
-    // white background subtle
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    // net, decorative
-    drawNet();
-
-    // paddles and ball
-    drawRect(player.x, player.y, player.w, player.h, 'var(--hotpink)' || '#ff3399');
-    drawRect(computer.x, computer.y, computer.w, computer.h, '#ff66b2');
-    drawCircle(ball.x, ball.y, ball.r, '#ffd84d'); // yellow ball
-  }
-
-  let paused = false;
-  function pauseAndReset(direction){
-    paused = true;
-    // small flash or visual pause could be added
-    setTimeout(()=>{
-      resetBall(direction);
-      paused = false;
-    }, 700);
-  }
-
-  function loop(){
-    if(!running) return;
-    if(!paused){
-      update();
-    }
-    render();
-    rafId = requestAnimationFrame(loop);
-  }
-
-  // start/stop control
-  function startGame(){
-    if(running) return;
-    running = true;
-    // ensure canvas size matches device pixel ratio for clarity
-    const ratio = window.devicePixelRatio || 1;
-    const w = 700, h = 420;
-    canvas.width = Math.floor(w * ratio);
-    canvas.height = Math.floor(h * ratio);
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-    ctx.setTransform(ratio,0,0,ratio,0,0);
-
-    // reinitialize paddles and ball in proper coords
-    player = { x: 10, y: (h - paddleHeight)/2, w: paddleWidth, h: paddleHeight };
-    computer = { x: w - paddleWidth - 10, y: (h - paddleHeight)/2, w: paddleWidth, h: paddleHeight };
-    ball = { x: w/2, y: h/2, r: 9, vx: 4*(Math.random()>0.5?1:-1), vy: 3*(Math.random()>0.5?1:-1) };
-
-    // reset scores (optional — keep persistent; here we keep existing scores so user can continue)
-    playerScoreEl.textContent = playerScore;
-    computerScoreEl.textContent = computerScore;
-
-    // attach native events
-    canvas.addEventListener('mousemove', onMouseMove);
-    canvas.addEventListener('touchmove', onTouchMove, {passive:false});
-    window.addEventListener('keydown', onKeyDown);
-
-    // start loop
-    loop();
-  }
-
-  function stopGame(){
-    if(!running) return;
-    running = false;
-    cancelAnimationFrame(rafId);
-    canvas.removeEventListener('mousemove', onMouseMove);
-    canvas.removeEventListener('touchmove', onTouchMove);
-    window.removeEventListener('keydown', onKeyDown);
-  }
-
-  // input handlers
-  function onMouseMove(e){
-    const rect = canvas.getBoundingClientRect();
-    const y = (e.clientY - rect.top);
-    player.y = y - player.h/2;
-  }
-  function onTouchMove(e){
-    e.preventDefault();
-    const rect = canvas.getBoundingClientRect();
-    const touch = e.touches[0];
-    const y = (touch.clientY - rect.top);
-    player.y = y - player.h/2;
-  }
-  function onKeyDown(e){
-    if(e.key === 'ArrowUp'){ player.y -= 20; }
-    if(e.key === 'ArrowDown'){ player.y += 20; }
-  }
-
-  // ensure game is stopped on initial load (only started when user opens page)
-  stopGame();
-
-  // start if user opens by default 'game' page (not the case here)
-  // showPage('home'); // default
-
-  // small improvement: preserve focus so arrow keys can move when canvas visible
-  document.addEventListener('visibilitychange', ()=> {
-    if(document.hidden) stopGame();
-  });
-
-  // expose functions for debugging if needed (not required)
-  window._pong = { startGame, stopGame, resetBall };
+function resetBall(dir){
+  ball.x=canvas.width/2;ball.y=canvas.height/2;
+  let angle=(Math.random()*0.6-0.3);
+  let speed=4;
+  ball.vx=speed*(dir|| (Math.random()>0.5?1:-1));
+  ball.vy=speed*Math.sin(angle*3);
+}
+function update(){
+  ball.x+=ball.vx;ball.y+=ball.vy;
+  if(ball.y-ball.r<=0||ball.y+ball.r>=canvas.height){ball.vy*=-1;}
+  // player
+  if(ball.x-ball.r<=player.x+player.w&&ball.y>player.y&&ball.y<player.y+player.h){
+    ball.vx=Math.abs(ball.vx);
+    let delta=ball.y-(player.y+player.h/2);
+    ball.vy=delta*0.15;
+  } else if(ball.x<0){computerScore++;computerScoreEl.textContent=computerScore;resetBall(1);}
+  // comp
+  if(ball.x+ball.r>=comp.x&&ball.y>comp.y&&ball.y<comp.y+comp.h){
+    ball.vx=-Math.abs(ball.vx);
+    let delta=ball.y-(comp.y+comp.h/2);
+    ball.vy=delta*0.15;
+  } else if(ball.x>canvas.width){playerScore++;playerScoreEl.textContent=playerScore;resetBall(-1);}
+  // comp AI
+  let target=ball.y-comp.h/2;
+  comp.y+=Math.sign(target-comp.y)*Math.min(Math.abs(target-comp.y),4);
+  // clamp
+  player.y=Math.max(0,Math.min(canvas.height-player.h,player.y));
+  comp.y=Math.max(0,Math.min(canvas.height-comp.h,comp.y));
+}
+function render(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle=varColor();ctx.fillRect(player.x,player.y,player.w,player.h);
+  ctx.fillStyle='#555';ctx.fillRect(comp.x,comp.y,comp.w,comp.h);
+  ctx.fillStyle=varColor();ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fill();
+}
+function varColor(){return "#228B22";}
+function loop(){if(!running)return;update();render();rafId=requestAnimationFrame(loop);}
+function startGame(){if(running)return;running=true;resetBall();loop();}
+function stopGame(){running=false;cancelAnimationFrame(rafId);}
+canvas.addEventListener('mousemove',e=>{let rect=canvas.getBoundingClientRect();player.y=e.clientY-rect.top-player.h/2;});
+canvas.addEventListener('touchmove',e=>{let rect=canvas.getBoundingClientRect();player.y=e.touches[0].clientY-rect.top-player.h/2;});
+window.addEventListener('keydown',e=>{if(e.key==="ArrowUp")player.y-=20;if(e.key==="ArrowDown")player.y+=20;});
 </script>
 </body>
 </html>
