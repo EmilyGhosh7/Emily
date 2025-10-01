@@ -25,13 +25,6 @@
       border: 5px solid #ffb6c1;
       margin-top: 20px;
     }
-    .bio {
-      margin: 30px auto;
-      font-size: 18px;
-      max-width: 600px;
-      line-height: 1.6;
-      color: #333;
-    }
     .nav-buttons {
       margin-top: 20px;
     }
@@ -57,61 +50,132 @@
       line-height: 1.6;
       color: #333;
     }
+    canvas {
+      background: white;
+      display: block;
+      margin: 20px auto;
+      border: 3px solid #ffb6c1;
+    }
   </style>
 </head>
 <body>
+  <!-- Home -->
   <h1>Emily Ghosh</h1>
-
-  <!-- Profile Picture -->
   <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
 
-  <!-- Bio (Centered, No Heading) -->
-  <div class="bio">
-    Hi! My name is Emily. I love playing soccer, tennis, ski racing, and hockey. 
-    I also love to travel and spend time with friends. 
-    I have a sister named Daphne (15) and a brother named Ethan (20). 
-    One of my biggest interests is elephants — I really like them!
-  </div>
-
-  <!-- Navigation Buttons -->
+  <!-- Navigation -->
   <div class="nav-buttons">
-    <button class="button" onclick="showPage('sports')">Sports</button>
-    <button class="button" onclick="showPage('travel')">Travel</button>
-    <button class="button" onclick="showPage('friends')">Friends</button>
-    <button class="button" onclick="showPage('siblings')">Siblings</button>
+    <button class="button" onclick="showPage('about')">About Emily</button>
+    <button class="button" onclick="showPage('game')">Ping Pong Game</button>
   </div>
 
-  <!-- Sports Page -->
-  <div id="sports" class="page">
-    <h2>Sports</h2>
-    <p>I play soccer, tennis, ski racing, and hockey.</p>
+  <!-- About Emily Page -->
+  <div id="about" class="page">
+    <h2>About Emily</h2>
+    <p>Emily Ghosh is a student who loves playing soccer, tennis, ski racing, and hockey. She enjoys traveling and spending time with her friends. Emily has two siblings: Daphne (15) and Ethan (20). She also has a special love for elephants, which she counts among her favorite interests.</p>
   </div>
 
-  <!-- Travel Page -->
-  <div id="travel" class="page">
-    <h2>Travel</h2>
-    <p>I love traveling and exploring new places whenever I can.</p>
-  </div>
-
-  <!-- Friends Page -->
-  <div id="friends" class="page">
-    <h2>Friends</h2>
-    <p>I enjoy spending time with my close friends!</p>
-  </div>
-
-  <!-- Siblings Page -->
-  <div id="siblings" class="page">
-    <h2>Siblings</h2>
-    <p>I have a sister named Daphne (15) and a brother named Ethan (20).</p>
+  <!-- Ping Pong Game Page -->
+  <div id="game" class="page">
+    <h2>Ping Pong Game</h2>
+    <canvas id="pongCanvas" width="480" height="320"></canvas><br>
+    <button class="button" onclick="togglePause()">Pause/Resume</button>
+    <p id="score">Score: 0</p>
   </div>
 
   <script>
+    // Page switching
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(page => {
         page.style.display = 'none';
       });
       document.getElementById(pageId).style.display = 'block';
     }
+
+    // Ping Pong Game
+    const canvas = document.getElementById("pongCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let ballRadius = 10;
+    let x = canvas.width / 2;
+    let y = canvas.height - 30;
+    let dx = 2;
+    let dy = -2;
+
+    let paddleHeight = 10;
+    let paddleWidth = 75;
+    let paddleX = (canvas.width - paddleWidth) / 2;
+
+    let rightPressed = false;
+    let leftPressed = false;
+    let score = 0;
+    let paused = false;
+
+    document.addEventListener("keydown", keyDownHandler);
+    document.addEventListener("keyup", keyUpHandler);
+
+    function keyDownHandler(e) {
+      if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
+      else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true;
+    }
+
+    function keyUpHandler(e) {
+      if (e.key === "Right" || e.key === "ArrowRight") rightPressed = false;
+      else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
+    }
+
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+      ctx.fillStyle = "yellow"; // Tennis ball color
+      ctx.fill();
+      ctx.strokeStyle = "green";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.closePath();
+    }
+
+    function drawPaddle() {
+      ctx.beginPath();
+      ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+      ctx.fillStyle = "#ff69b4";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function draw() {
+      if (paused) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBall();
+      drawPaddle();
+
+      if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) dx = -dx;
+      if (y + dy < ballRadius) dy = -dy;
+      else if (y + dy > canvas.height - ballRadius) {
+        if (x > paddleX && x < paddleX + paddleWidth) {
+          dy = -dy;
+          score++;
+          document.getElementById("score").innerText = "Score: " + score;
+        } else {
+          document.location.reload(); // Restart game on miss
+        }
+      }
+
+      x += dx;
+      y += dy;
+
+      if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += 5;
+      else if (leftPressed && paddleX > 0) paddleX -= 5;
+
+      requestAnimationFrame(draw);
+    }
+
+    function togglePause() {
+      paused = !paused;
+      if (!paused) draw();
+    }
+
+    draw();
   </script>
 </body>
 </html>
