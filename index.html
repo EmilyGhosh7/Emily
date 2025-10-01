@@ -1,181 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Emily Ghosh</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ffe6f0, #ffffff);
-      margin: 0;
-      padding: 0;
-      text-align: center;
+    :root{
+      --pastel-pink:#f8cde0;
+      --light-bg:#fff5fa;
+      --accent:#d65a94;
     }
-    h1 {
-      font-family: "Brush Script MT", cursive;
-      font-size: 48px;
-      color: #ff69b4;
-      margin-top: 20px;
+    html,body{height:100%; margin:0;}
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, var(--light-bg), #ffffff);
+      color:#222;
+      text-align:center;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
-    .profile-pic {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 5px solid #ffb6c1;
-      margin-top: 20px;
+
+    header{
+      padding:26px 12px 6px;
     }
-    .nav-buttons {
-      margin-top: 20px;
+    h1{
+      margin:6px 0 14px;
+      font-family: 'Great Vibes', cursive;
+      font-size:48px;
+      color:var(--accent);
     }
-    .button {
-      background-color: #ffb6c1;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 12px 24px;
-      margin: 10px;
-      cursor: pointer;
-      font-size: 18px;
-      transition: 0.3s;
+
+    .profile-pic{
+      width:200px;
+      height:200px;
+      border-radius:50%;
+      object-fit:cover;
+      border:5px solid var(--pastel-pink);
+      display:block;
+      margin: 8px auto 18px;
+      background: #fff;
     }
-    .button:hover {
-      background-color: #ff69b4;
+
+    .nav {
+      margin: 10px 0 22px;
     }
+    .btn {
+      background:var(--pastel-pink);
+      color:#222;
+      border:0;
+      border-radius:10px;
+      padding:10px 16px;
+      margin:8px;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .08s ease, background .12s;
+    }
+    .btn:hover{ transform: translateY(-2px); background:#f4bad6; }
+
+    /* pages (only About and Game exist; Home is just header/pic) */
     .page {
-      display: none;
-      margin: 30px auto;
-      font-size: 18px;
-      max-width: 600px;
-      line-height: 1.6;
-      color: #333;
+      display:none;
+      max-width:860px;
+      margin: 16px auto 40px;
+      background: #fff;
+      border-radius:12px;
+      padding:20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      text-align:left;
     }
-    canvas {
-      background: white;
-      display: block;
-      margin: 20px auto;
-      border: 3px solid #ffb6c1;
+    .page.active { display:block; }
+    .page h2 { color: var(--accent); margin-top:0; }
+
+    /* Game styling */
+    #pong {
+      display:block;
+      margin: 16px auto;
+      border-radius:8px;
+      background:#fff;
+      border: 3px solid var(--pastel-pink);
+      max-width:100%;
+      height:auto;
+    }
+    .controls { margin-top:12px; text-align:center; }
+    .scoreboard { margin-top:10px; font-weight:700; color:var(--accent); }
+    .small { font-size:13px; color:#666; margin-top:6px; }
+
+    /* responsive */
+    @media (max-width:520px){
+      h1{ font-size:36px; }
+      .profile-pic{ width:150px; height:150px; }
+      .btn{ padding:8px 12px; margin:6px; }
     }
   </style>
 </head>
 <body>
-  <!-- Home -->
-  <h1>Emily Ghosh</h1>
-  <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
+  <header>
+    <h1>Emily Ghosh</h1>
+    <!-- tries first filename, falls back to profile.jpg if not found -->
+    <img id="profileImg" class="profile-pic" src="20250324_122406_EA68BD.jpeg"
+         alt="Emily's profile picture"
+         onerror="this.onerror=null;this.src='profile.jpg'">
+  </header>
 
-  <!-- Navigation -->
-  <div class="nav-buttons">
-    <button class="button" onclick="showPage('about')">About Emily</button>
-    <button class="button" onclick="showPage('game')">Ping Pong Game</button>
+  <div class="nav">
+    <button class="btn" onclick="showPage('about')">About Emily</button>
+    <button class="btn" onclick="showPage('game')">Ping Pong Game</button>
   </div>
 
-  <!-- About Emily Page -->
-  <div id="about" class="page">
+  <!-- About Emily page: heading only (no paragraph as requested) -->
+  <section id="about" class="page" aria-label="About Emily">
     <h2>About Emily</h2>
-    <p>Emily Ghosh is a student who loves playing soccer, tennis, ski racing, and hockey. She enjoys traveling and spending time with her friends. Emily has two siblings: Daphne (15) and Ethan (20). She also has a special love for elephants, which she counts among her favorite interests.</p>
-  </div>
+    <!-- intentionally left blank per your request -->
+  </section>
 
-  <!-- Ping Pong Game Page -->
-  <div id="game" class="page">
+  <!-- Game page -->
+  <section id="game" class="page" aria-label="Ping Pong Game">
     <h2>Ping Pong Game</h2>
-    <canvas id="pongCanvas" width="480" height="320"></canvas><br>
-    <button class="button" onclick="togglePause()">Pause/Resume</button>
-    <p id="score">Score: 0</p>
-  </div>
 
-  <script>
-    // Page switching
-    function showPage(pageId) {
-      document.querySelectorAll('.page').forEach(page => {
-        page.style.display = 'none';
-      });
-      document.getElementById(pageId).style.display = 'block';
+    <div class="scoreboard" aria-live="polite">
+      You: <span id="playerScore">0</span> &nbsp; — &nbsp; Computer: <span id="computerScore">0</span>
+    </div>
+
+    <canvas id="pong" width="700" height="420" role="img" aria-label="Ping pong game canvas"></canvas>
+
+    <div class="controls">
+      <button class="btn" id="pauseBtn">Pause</button>
+      <div class="small">Controls: move paddle with mouse or touch on the canvas, or use W/S / ArrowUp / ArrowDown</div>
+    </div>
+  </section>
+
+<script>
+  // --- Page navigation (start/stop game) ---
+  function showPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+
+    if(id === 'game') startGame();
+    else stopGame();
+    // scroll top of page area for small screens
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // --- Ping pong game (vertical paddle left / AI right) ---
+  const canvas = document.getElementById('pong');
+  const ctx = canvas.getContext('2d');
+  const playerScoreEl = document.getElementById('playerScore');
+  const computerScoreEl = document.getElementById('computerScore');
+  const pauseBtn = document.getElementById('pauseBtn');
+
+  let running = false;
+  let rafId = null;
+  let paused = false;
+
+  // Sizes (use canvas pixel coords)
+  const CANVAS_W = 700;
+  const CANVAS_H = 420;
+  const PADDLE_W = 12;
+  const PADDLE_H = 90;
+  const BALL_R = 12;
+
+  // Game state
+  let player = { x: 10, y: (CANVAS_H - PADDLE_H)/2, w: PADDLE_W, h: PADDLE_H };
+  let computer = { x: CANVAS_W - PADDLE_W - 10, y: (CANVAS_H - PADDLE_H)/2, w: PADDLE_W, h: PADDLE_H };
+  let ball = { x: CANVAS_W/2, y: CANVAS_H/2, vx: 4 * (Math.random()>0.5?1:-1), vy: 3 * (Math.random()>0.5?1:-1), r: BALL_R };
+  let playerScore = 0, computerScore = 0;
+
+  // initialize canvas element size to desired pixels
+  function resetCanvasSize() {
+    // keep simple: use given width/height attributes; ensure style fits container
+    canvas.width = CANVAS_W;
+    canvas.height = CANVAS_H;
+    canvas.style.width = Math.min(window.innerWidth - 40, CANVAS_W) + 'px';
+  }
+  resetCanvasSize();
+  window.addEventListener('resize', ()=>{ resetCanvasSize(); });
+
+  function resetBall(direction){
+    ball.x = CANVAS_W/2;
+    ball.y = CANVAS_H/2;
+    const speed = 4;
+    ball.vx = speed * (direction || (Math.random()>0.5?1:-1));
+    // small random vertical velocity
+    ball.vy = (Math.random()*2 + 1) * (Math.random()>0.5?1:-1);
+  }
+
+  function draw(){
+    // clear
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
+
+    // center net
+    ctx.fillStyle = 'rgba(214,90,148, 0.06)';
+    for(let y=8; y<CANVAS_H; y+=20){
+      ctx.fillRect(CANVAS_W/2 -1, y, 2, 12);
     }
 
-    // Ping Pong Game
-    const canvas = document.getElementById("pongCanvas");
-    const ctx = canvas.getContext("2d");
+    // paddles
+    ctx.fillStyle = '#f4bad6';
+    ctx.fillRect(player.x, player.y, player.w, player.h);
+    ctx.fillStyle = '#888';
+    ctx.fillRect(computer.x, computer.y, computer.w, computer.h);
 
-    let ballRadius = 10;
-    let x = canvas.width / 2;
-    let y = canvas.height - 30;
-    let dx = 2;
-    let dy = -2;
+    // draw ball as tennis ball style (yellow with white curves)
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+    ctx.fillStyle = '#f7f75c';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#ffffff';
+    // small curved white stroke lines to hint tennis seam
+    ctx.beginPath();
+    ctx.arc(ball.x - 2, ball.y, ball.r-3, 0.5, Math.PI+0.5);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(ball.x + 2, ball.y, ball.r-3, -0.5, Math.PI-0.5);
+    ctx.stroke();
 
-    let paddleHeight = 10;
-    let paddleWidth = 75;
-    let paddleX = (canvas.width - paddleWidth) / 2;
+    // scoreboard (drawn inside page area separately)
+  }
 
-    let rightPressed = false;
-    let leftPressed = false;
-    let score = 0;
-    let paused = false;
+  function update(){
+    if(paused) return;
 
-    document.addEventListener("keydown", keyDownHandler);
-    document.addEventListener("keyup", keyUpHandler);
+    // move ball
+    ball.x += ball.vx;
+    ball.y += ball.vy;
 
-    function keyDownHandler(e) {
-      if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
-      else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true;
+    // top/bottom bounce
+    if(ball.y - ball.r <= 0){
+      ball.y = ball.r; ball.vy = -ball.vy;
+    } else if(ball.y + ball.r >= CANVAS_H){
+      ball.y = CANVAS_H - ball.r; ball.vy = -ball.vy;
     }
 
-    function keyUpHandler(e) {
-      if (e.key === "Right" || e.key === "ArrowRight") rightPressed = false;
-      else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
-    }
-
-    function drawBall() {
-      ctx.beginPath();
-      ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "yellow"; // Tennis ball color
-      ctx.fill();
-      ctx.strokeStyle = "green";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.closePath();
-    }
-
-    function drawPaddle() {
-      ctx.beginPath();
-      ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-      ctx.fillStyle = "#ff69b4";
-      ctx.fill();
-      ctx.closePath();
-    }
-
-    function draw() {
-      if (paused) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawBall();
-      drawPaddle();
-
-      if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) dx = -dx;
-      if (y + dy < ballRadius) dy = -dy;
-      else if (y + dy > canvas.height - ballRadius) {
-        if (x > paddleX && x < paddleX + paddleWidth) {
-          dy = -dy;
-          score++;
-          document.getElementById("score").innerText = "Score: " + score;
-        } else {
-          document.location.reload(); // Restart game on miss
-        }
+    // player collision (left paddle)
+    if(ball.x - ball.r <= player.x + player.w){
+      if(ball.y >= player.y && ball.y <= player.y + player.h){
+        // reflect
+        ball.x = player.x + player.w + ball.r + 0.1;
+        ball.vx = Math.abs(ball.vx) * 1.03; // slightly speed up
+        // adjust vy by where it hit the paddle
+        const delta = (ball.y - (player.y + player.h/2));
+        ball.vy += delta * 0.08;
+      } else if(ball.x - ball.r < 0){
+        // computer scores
+        computerScore++;
+        computerScoreEl.textContent = computerScore;
+        resetBall(1);
       }
-
-      x += dx;
-      y += dy;
-
-      if (rightPressed && paddleX < canvas.width - paddleWidth) paddleX += 5;
-      else if (leftPressed && paddleX > 0) paddleX -= 5;
-
-      requestAnimationFrame(draw);
     }
 
-    function togglePause() {
-      paused = !paused;
-      if (!paused) draw();
+    // computer collision (right paddle)
+    if(ball.x + ball.r >= computer.x){
+      if(ball.y >= computer.y && ball.y <= computer.y + computer.h){
+        ball.x = computer.x - ball.r - 0.1;
+        ball.vx = -Math.abs(ball.vx) * 1.02;
+        const delta = (ball.y - (computer.y + computer.h/2));
+        ball.vy += delta * 0.06;
+      } else if(ball.x + ball.r > CANVAS_W){
+        playerScore++;
+        playerScoreEl.textContent = playerScore;
+        resetBall(-1);
+      }
     }
 
+    // computer AI: follow ball with limited speed
+    const target = ball.y - computer.h/2;
+    const diff = target - computer.y;
+    const step = Math.min( Math.abs(diff), 3 + Math.abs(ball.vx)*0.15 );
+    computer.y += Math.sign(diff) * step;
+
+    // clamp paddles inside canvas
+    player.y = Math.max(0, Math.min(CANVAS_H - player.h, player.y));
+    computer.y = Math.max(0, Math.min(CANVAS_H - computer.h, computer.y));
+  }
+
+  function frame(){
+    if(!running) return;
+    update();
     draw();
-  </script>
+    rafId = requestAnimationFrame(frame);
+  }
+
+  function startGame(){
+    if(running) return;
+    running = true;
+    paused = false;
+    resetBall();
+    // ensure scores preserved; update scoreboard DOM
+    playerScoreEl.textContent = playerScore;
+    computerScoreEl.textContent = computerScore;
+    // Add input listeners
+    canvas.addEventListener('mousemove', onMouseMove);
+    canvas.addEventListener('touchmove', onTouchMove, {passive:false});
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onKeyUp);
+    pauseBtn.addEventListener('click', togglePause);
+    frame();
+  }
+
+  function stopGame(){
+    if(!running) return;
+    running = false;
+    cancelAnimationFrame(rafId);
+    // remove listeners so they don't act when not on the game page
+    canvas.removeEventListener('mousemove', onMouseMove);
+    canvas.removeEventListener('touchmove', onTouchMove);
+    window.removeEventListener('keydown', onKeyDown);
+    window.removeEventListener('keyup', onKeyUp);
+    pauseBtn.removeEventListener('click', togglePause);
+  }
+
+  function togglePause(){
+    paused = !paused;
+    pauseBtn.textContent = paused ? 'Resume' : 'Pause';
+    if(!paused) { /* ensure loop continues */ if(running) frame(); }
+  }
+
+  // Input handling
+  let keyState = {};
+  function onKeyDown(e){
+    keyState[e.key] = true;
+    // W/S and ArrowUp/ArrowDown control
+    if(e.key === 'w' || e.key === 'W' || e.key === 'ArrowUp') { player.y -= 12; }
+    if(e.key === 's' || e.key === 'S' || e.key === 'ArrowDown') { player.y += 12; }
+  }
+  function onKeyUp(e){
+    keyState[e.key] = false;
+  }
+
+  function onMouseMove(e){
+    const rect = canvas.getBoundingClientRect();
+    // y coordinate in canvas space
+    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+    player.y = y - player.h/2;
+  }
+  function onTouchMove(e){
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+    player.y = y - player.h/2;
+  }
+
+  // ensure game stops if user switches away
+  document.addEventListener('visibilitychange', ()=> {
+    if(document.hidden) {
+      if(running) togglePause();
+    }
+  });
+
+  // Clean initial state: Home only
+  // (No About paragraph per request)
+  // Show nothing but home on load; game will start only when clicking Game
+  document.addEventListener('DOMContentLoaded', ()=>{
+    // hide pages initially
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    // keep About hidden; Home is just header/pic (no page)
+  });
+
+  // Expose small helpers for debugging in console
+  window._site = { startGame, stopGame, resetBall };
+</script>
 </body>
 </html>
