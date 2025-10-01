@@ -32,19 +32,30 @@
       line-height: 1.6;
       color: #333;
     }
+    .nav-buttons {
+      margin-top: 20px;
+    }
     .button {
       background-color: #ffb6c1;
       color: white;
       border: none;
       border-radius: 12px;
       padding: 12px 24px;
-      margin: 20px;
+      margin: 10px;
       cursor: pointer;
       font-size: 18px;
       transition: 0.3s;
     }
     .button:hover {
       background-color: #ff69b4;
+    }
+    .page {
+      display: none;
+      margin: 30px auto;
+      font-size: 18px;
+      max-width: 600px;
+      line-height: 1.6;
+      color: #333;
     }
   </style>
 </head>
@@ -54,7 +65,7 @@
   <!-- Profile Picture -->
   <img src="profile.jpg" alt="Profile Picture" class="profile-pic">
 
-  <!-- Bio Text -->
+  <!-- Bio (Centered, No Heading) -->
   <div class="bio">
     Hi! My name is Emily. I love playing soccer, tennis, ski racing, and hockey. 
     I also love to travel and spend time with friends. 
@@ -62,12 +73,44 @@
     One of my biggest interests is elephants — I really like them!
   </div>
 
-  <!-- Single Button -->
-  <button class="button" onclick="showMore()">Learn More About Me</button>
+  <!-- Navigation Buttons -->
+  <div class="nav-buttons">
+    <button class="button" onclick="showPage('sports')">Sports</button>
+    <button class="button" onclick="showPage('travel')">Travel</button>
+    <button class="button" onclick="showPage('friends')">Friends</button>
+    <button class="button" onclick="showPage('siblings')">Siblings</button>
+  </div>
+
+  <!-- Sports Page -->
+  <div id="sports" class="page">
+    <h2>Sports</h2>
+    <p>I play soccer, tennis, ski racing, and hockey.</p>
+  </div>
+
+  <!-- Travel Page -->
+  <div id="travel" class="page">
+    <h2>Travel</h2>
+    <p>I love traveling and exploring new places whenever I can.</p>
+  </div>
+
+  <!-- Friends Page -->
+  <div id="friends" class="page">
+    <h2>Friends</h2>
+    <p>I enjoy spending time with my close friends!</p>
+  </div>
+
+  <!-- Siblings Page -->
+  <div id="siblings" class="page">
+    <h2>Siblings</h2>
+    <p>I have a sister named Daphne (15) and a brother named Ethan (20).</p>
+  </div>
 
   <script>
-    function showMore() {
-      alert("Sports: Soccer, Tennis, Ski Racing, Hockey\nTravel: I love exploring new places\nFriends: I enjoy spending time with my friends\nSiblings: Daphne (15), Ethan (20)");
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.style.display = 'none';
+      });
+      document.getElementById(pageId).style.display = 'block';
     }
   </script>
 </body>
