@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Emily's Tennis Profile</title>
+<title>Emily's Profile</title>
 <style>
   :root{
-    --green:#228B22;
-    --lightgreen:#dfffdf;
-    --yellow:#f7e94d;
+    --pink:#f8cde0;
+    --lightpink:#fff5fa;
+    --white:#ffffff;
   }
   body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background: linear-gradient(to bottom, var(--lightgreen), white);
-    color:#222;
+    background: linear-gradient(to bottom, var(--lightpink), var(--white));
+    color:#333;
     text-align:center;
     overflow-x:hidden;
   }
   header{
-    background: var(--green);
-    color:white;
+    background: var(--pink);
+    color:#222;
     padding:20px;
     font-weight:700;
     font-size:28px;
@@ -29,7 +29,7 @@
     margin:14px 0;
   }
   nav .btn{
-    background:var(--yellow);
+    background:var(--pink);
     color:#222;
     border:none;
     padding:10px 16px;
@@ -38,22 +38,27 @@
     font-weight:700;
     cursor:pointer;
   }
-  nav .btn:hover{background:#e5d63f;}
-  .page{display:none;padding:24px;max-width:900px;margin:22px auto;background:white;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,0.1);text-align:left;}
+  nav .btn:hover{background:#f4bad6;}
+  .page{
+    display:none;
+    padding:24px;
+    max-width:900px;
+    margin:22px auto;
+    background:white;
+    border-radius:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.1);
+    text-align:left;
+  }
   .page.active{display:block;}
-  .page h2{color:var(--green);margin-top:0;}
-  /* tennis ball decor */
-  .decor svg{position:fixed;opacity:0.08;z-index:0;}
-  .decor .ball1{left:20px;top:30px;width:120px;height:120px;}
-  .decor .ball2{right:20px;bottom:30px;width:150px;height:150px;}
+  .page h2{color:#d65a94;margin-top:0;}
   /* Pong canvas */
-  #pong{display:block;margin:16px auto;background:white;border:2px solid var(--green);border-radius:8px;}
-  .scoreboard{font-weight:700;color:var(--green);margin-top:4px;}
-  .scoreboard span{display:inline-block;min-width:40px;font-size:20px;background:#f4ffe6;padding:6px 10px;border-radius:8px;margin:0 6px;}
+  #pong{display:block;margin:16px auto;background:white;border:2px solid var(--pink);border-radius:8px;}
+  .scoreboard{font-weight:700;color:#d65a94;margin-top:4px;text-align:center;}
+  .scoreboard span{display:inline-block;min-width:40px;font-size:20px;background:var(--lightpink);padding:6px 10px;border-radius:8px;margin:0 6px;}
 </style>
 </head>
 <body>
-  <header>Emily's Tennis Profile</header>
+  <header>Emily's Profile</header>
   <nav>
     <button class="btn" onclick="showPage('home')">Home</button>
     <button class="btn" onclick="showPage('friends')">Friends</button>
@@ -62,20 +67,6 @@
     <button class="btn" onclick="showPage('travel')">Travel</button>
     <button class="btn" onclick="showPage('game')">Ping Pong Game</button>
   </nav>
-
-  <!-- tennis ball decorations -->
-  <div class="decor">
-    <svg class="ball1" viewBox="0 0 64 64">
-      <circle cx="32" cy="32" r="30" fill="#f7e94d"/>
-      <path d="M10 32c8-8 24-8 24-8" stroke="#fff" stroke-width="3" fill="none"/>
-      <path d="M54 32c-8 8-24 8-24 8" stroke="#fff" stroke-width="3" fill="none"/>
-    </svg>
-    <svg class="ball2" viewBox="0 0 64 64">
-      <circle cx="32" cy="32" r="30" fill="#f7e94d"/>
-      <path d="M10 32c8-8 24-8 24-8" stroke="#fff" stroke-width="3" fill="none"/>
-      <path d="M54 32c-8 8-24 8-24 8" stroke="#fff" stroke-width="3" fill="none"/>
-    </svg>
-  </div>
 
   <!-- pages -->
   <div id="home" class="page active">
@@ -124,7 +115,7 @@ function showPage(id){
 // Pong Game
 const canvas=document.getElementById('pong');
 const ctx=canvas.getContext('2d');
-let running=false,rafId,paused=false;
+let running=false,rafId;
 let playerScore=0,computerScore=0;
 const playerScoreEl=document.getElementById('playerScore');
 const computerScoreEl=document.getElementById('computerScore');
@@ -143,22 +134,18 @@ function resetBall(dir){
 function update(){
   ball.x+=ball.vx;ball.y+=ball.vy;
   if(ball.y-ball.r<=0||ball.y+ball.r>=canvas.height){ball.vy*=-1;}
-  // player
   if(ball.x-ball.r<=player.x+player.w&&ball.y>player.y&&ball.y<player.y+player.h){
     ball.vx=Math.abs(ball.vx);
     let delta=ball.y-(player.y+player.h/2);
     ball.vy=delta*0.15;
   } else if(ball.x<0){computerScore++;computerScoreEl.textContent=computerScore;resetBall(1);}
-  // comp
   if(ball.x+ball.r>=comp.x&&ball.y>comp.y&&ball.y<comp.y+comp.h){
     ball.vx=-Math.abs(ball.vx);
     let delta=ball.y-(comp.y+comp.h/2);
     ball.vy=delta*0.15;
   } else if(ball.x>canvas.width){playerScore++;playerScoreEl.textContent=playerScore;resetBall(-1);}
-  // comp AI
   let target=ball.y-comp.h/2;
   comp.y+=Math.sign(target-comp.y)*Math.min(Math.abs(target-comp.y),4);
-  // clamp
   player.y=Math.max(0,Math.min(canvas.height-player.h,player.y));
   comp.y=Math.max(0,Math.min(canvas.height-comp.h,comp.y));
 }
@@ -166,10 +153,10 @@ function render(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle=varColor();ctx.fillRect(player.x,player.y,player.w,player.h);
-  ctx.fillStyle='#555';ctx.fillRect(comp.x,comp.y,comp.w,comp.h);
+  ctx.fillStyle='#888';ctx.fillRect(comp.x,comp.y,comp.w,comp.h);
   ctx.fillStyle=varColor();ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fill();
 }
-function varColor(){return "#228B22";}
+function varColor(){return "#f4bad6";}
 function loop(){if(!running)return;update();render();rafId=requestAnimationFrame(loop);}
 function startGame(){if(running)return;running=true;resetBall();loop();}
 function stopGame(){running=false;cancelAnimationFrame(rafId);}
