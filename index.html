@@ -17,76 +17,45 @@
       background: linear-gradient(135deg, var(--light-bg), #ffffff);
       color:#222;
       text-align:center;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
     }
-
-    header{
-      padding:26px 12px 6px;
-    }
+    header{ padding:26px 12px 6px; }
     h1{
       margin:6px 0 14px;
       font-family: 'Great Vibes', cursive;
       font-size:48px;
       color:var(--accent);
     }
-
     .profile-pic{
-      width:200px;
-      height:200px;
-      border-radius:50%;
-      object-fit:cover;
-      border:5px solid var(--pastel-pink);
-      display:block;
-      margin: 8px auto 18px;
-      background: #fff;
+      width:200px; height:200px; border-radius:50%;
+      object-fit:cover; border:5px solid var(--pastel-pink);
+      display:block; margin: 8px auto 18px; background:#fff;
     }
-
-    .nav {
-      margin: 10px 0 22px;
-    }
+    .nav { margin: 10px 0 22px; }
     .btn {
-      background:var(--pastel-pink);
-      color:#222;
-      border:0;
-      border-radius:10px;
-      padding:10px 16px;
-      margin:8px;
-      font-weight:700;
-      cursor:pointer;
+      background:var(--pastel-pink); color:#222;
+      border:0; border-radius:10px;
+      padding:10px 16px; margin:8px;
+      font-weight:700; cursor:pointer;
       transition: transform .08s ease, background .12s;
     }
     .btn:hover{ transform: translateY(-2px); background:#f4bad6; }
-
-    /* pages (only About and Game exist; Home is just header/pic) */
     .page {
-      display:none;
-      max-width:860px;
-      margin: 16px auto 40px;
-      background: #fff;
-      border-radius:12px;
-      padding:20px;
+      display:none; max-width:860px; margin: 16px auto 40px;
+      background: #fff; border-radius:12px; padding:20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.06);
       text-align:left;
     }
     .page.active { display:block; }
     .page h2 { color: var(--accent); margin-top:0; }
-
-    /* Game styling */
     #pong {
-      display:block;
-      margin: 16px auto;
-      border-radius:8px;
-      background:#fff;
+      display:block; margin: 16px auto;
+      border-radius:8px; background:#fff;
       border: 3px solid var(--pastel-pink);
-      max-width:100%;
-      height:auto;
+      max-width:100%; height:auto;
     }
     .controls { margin-top:12px; text-align:center; }
     .scoreboard { margin-top:10px; font-weight:700; color:var(--accent); }
     .small { font-size:13px; color:#666; margin-top:6px; }
-
-    /* responsive */
     @media (max-width:520px){
       h1{ font-size:36px; }
       .profile-pic{ width:150px; height:150px; }
@@ -97,7 +66,6 @@
 <body>
   <header>
     <h1>Emily Ghosh</h1>
-    <!-- tries first filename, falls back to profile.jpg if not found -->
     <img id="profileImg" class="profile-pic" src="20250324_122406_EA68BD.jpeg"
          alt="Emily's profile picture"
          onerror="this.onerror=null;this.src='profile.jpg'">
@@ -108,260 +76,88 @@
     <button class="btn" onclick="showPage('game')">Ping Pong Game</button>
   </div>
 
-  <!-- About Emily page: heading only (no paragraph as requested) -->
+  <!-- About Emily page -->
   <section id="about" class="page" aria-label="About Emily">
     <h2>About Emily</h2>
-    <!-- intentionally left blank per your request -->
+    <p>Hi I'm Emily, I like to play soccer, hockey, and tennis. I like elephants.</p>
   </section>
 
   <!-- Game page -->
   <section id="game" class="page" aria-label="Ping Pong Game">
     <h2>Ping Pong Game</h2>
-
     <div class="scoreboard" aria-live="polite">
       You: <span id="playerScore">0</span> &nbsp; — &nbsp; Computer: <span id="computerScore">0</span>
     </div>
-
-    <canvas id="pong" width="700" height="420" role="img" aria-label="Ping pong game canvas"></canvas>
-
+    <canvas id="pong" width="700" height="420"></canvas>
     <div class="controls">
       <button class="btn" id="pauseBtn">Pause</button>
-      <div class="small">Controls: move paddle with mouse or touch on the canvas, or use W/S / ArrowUp / ArrowDown</div>
+      <div class="small">Controls: mouse, touch, or W/S / Arrow keys</div>
     </div>
   </section>
 
 <script>
-  // --- Page navigation (start/stop game) ---
   function showPage(id){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-
     if(id === 'game') startGame();
     else stopGame();
-    // scroll top of page area for small screens
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
-  // --- Ping pong game (vertical paddle left / AI right) ---
   const canvas = document.getElementById('pong');
   const ctx = canvas.getContext('2d');
   const playerScoreEl = document.getElementById('playerScore');
   const computerScoreEl = document.getElementById('computerScore');
   const pauseBtn = document.getElementById('pauseBtn');
 
-  let running = false;
-  let rafId = null;
-  let paused = false;
+  let running = false, rafId=null, paused=false;
+  const CANVAS_W=700, CANVAS_H=420, PADDLE_W=12, PADDLE_H=90, BALL_R=12;
+  let player={x:10,y:(CANVAS_H-PADDLE_H)/2,w:PADDLE_W,h:PADDLE_H};
+  let computer={x:CANVAS_W-PADDLE_W-10,y:(CANVAS_H-PADDLE_H)/2,w:PADDLE_W,h:PADDLE_H};
+  let ball={x:CANVAS_W/2,y:CANVAS_H/2,vx:4,vy:3,r:BALL_R};
+  let playerScore=0, computerScore=0;
 
-  // Sizes (use canvas pixel coords)
-  const CANVAS_W = 700;
-  const CANVAS_H = 420;
-  const PADDLE_W = 12;
-  const PADDLE_H = 90;
-  const BALL_R = 12;
-
-  // Game state
-  let player = { x: 10, y: (CANVAS_H - PADDLE_H)/2, w: PADDLE_W, h: PADDLE_H };
-  let computer = { x: CANVAS_W - PADDLE_W - 10, y: (CANVAS_H - PADDLE_H)/2, w: PADDLE_W, h: PADDLE_H };
-  let ball = { x: CANVAS_W/2, y: CANVAS_H/2, vx: 4 * (Math.random()>0.5?1:-1), vy: 3 * (Math.random()>0.5?1:-1), r: BALL_R };
-  let playerScore = 0, computerScore = 0;
-
-  // initialize canvas element size to desired pixels
-  function resetCanvasSize() {
-    // keep simple: use given width/height attributes; ensure style fits container
-    canvas.width = CANVAS_W;
-    canvas.height = CANVAS_H;
-    canvas.style.width = Math.min(window.innerWidth - 40, CANVAS_W) + 'px';
+  function resetBall(dir){
+    ball.x=CANVAS_W/2; ball.y=CANVAS_H/2;
+    ball.vx=4*(dir|| (Math.random()>0.5?1:-1));
+    ball.vy=(Math.random()*2+1)*(Math.random()>0.5?1:-1);
   }
-  resetCanvasSize();
-  window.addEventListener('resize', ()=>{ resetCanvasSize(); });
-
-  function resetBall(direction){
-    ball.x = CANVAS_W/2;
-    ball.y = CANVAS_H/2;
-    const speed = 4;
-    ball.vx = speed * (direction || (Math.random()>0.5?1:-1));
-    // small random vertical velocity
-    ball.vy = (Math.random()*2 + 1) * (Math.random()>0.5?1:-1);
-  }
-
   function draw(){
-    // clear
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
-
-    // center net
-    ctx.fillStyle = 'rgba(214,90,148, 0.06)';
-    for(let y=8; y<CANVAS_H; y+=20){
-      ctx.fillRect(CANVAS_W/2 -1, y, 2, 12);
-    }
-
-    // paddles
-    ctx.fillStyle = '#f4bad6';
-    ctx.fillRect(player.x, player.y, player.w, player.h);
-    ctx.fillStyle = '#888';
-    ctx.fillRect(computer.x, computer.y, computer.w, computer.h);
-
-    // draw ball as tennis ball style (yellow with white curves)
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
-    ctx.fillStyle = '#f7f75c';
-    ctx.fill();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = '#ffffff';
-    // small curved white stroke lines to hint tennis seam
-    ctx.beginPath();
-    ctx.arc(ball.x - 2, ball.y, ball.r-3, 0.5, Math.PI+0.5);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(ball.x + 2, ball.y, ball.r-3, -0.5, Math.PI-0.5);
-    ctx.stroke();
-
-    // scoreboard (drawn inside page area separately)
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
+    ctx.fillStyle='rgba(214,90,148,0.06)';
+    for(let y=8;y<CANVAS_H;y+=20){ ctx.fillRect(CANVAS_W/2-1,y,2,12);}
+    ctx.fillStyle='#f4bad6'; ctx.fillRect(player.x,player.y,player.w,player.h);
+    ctx.fillStyle='#888'; ctx.fillRect(computer.x,computer.y,computer.w,computer.h);
+    ctx.beginPath(); ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
+    ctx.fillStyle='#f7f75c'; ctx.fill();
+    ctx.lineWidth=2; ctx.strokeStyle='#fff';
+    ctx.beginPath(); ctx.arc(ball.x-2,ball.y,ball.r-3,0.5,Math.PI+0.5); ctx.stroke();
+    ctx.beginPath(); ctx.arc(ball.x+2,ball.y,ball.r-3,-0.5,Math.PI-0.5); ctx.stroke();
   }
-
   function update(){
     if(paused) return;
-
-    // move ball
-    ball.x += ball.vx;
-    ball.y += ball.vy;
-
-    // top/bottom bounce
-    if(ball.y - ball.r <= 0){
-      ball.y = ball.r; ball.vy = -ball.vy;
-    } else if(ball.y + ball.r >= CANVAS_H){
-      ball.y = CANVAS_H - ball.r; ball.vy = -ball.vy;
-    }
-
-    // player collision (left paddle)
-    if(ball.x - ball.r <= player.x + player.w){
-      if(ball.y >= player.y && ball.y <= player.y + player.h){
-        // reflect
-        ball.x = player.x + player.w + ball.r + 0.1;
-        ball.vx = Math.abs(ball.vx) * 1.03; // slightly speed up
-        // adjust vy by where it hit the paddle
-        const delta = (ball.y - (player.y + player.h/2));
-        ball.vy += delta * 0.08;
-      } else if(ball.x - ball.r < 0){
-        // computer scores
-        computerScore++;
-        computerScoreEl.textContent = computerScore;
-        resetBall(1);
-      }
-    }
-
-    // computer collision (right paddle)
-    if(ball.x + ball.r >= computer.x){
-      if(ball.y >= computer.y && ball.y <= computer.y + computer.h){
-        ball.x = computer.x - ball.r - 0.1;
-        ball.vx = -Math.abs(ball.vx) * 1.02;
-        const delta = (ball.y - (computer.y + computer.h/2));
-        ball.vy += delta * 0.06;
-      } else if(ball.x + ball.r > CANVAS_W){
-        playerScore++;
-        playerScoreEl.textContent = playerScore;
-        resetBall(-1);
-      }
-    }
-
-    // computer AI: follow ball with limited speed
-    const target = ball.y - computer.h/2;
-    const diff = target - computer.y;
-    const step = Math.min( Math.abs(diff), 3 + Math.abs(ball.vx)*0.15 );
-    computer.y += Math.sign(diff) * step;
-
-    // clamp paddles inside canvas
-    player.y = Math.max(0, Math.min(CANVAS_H - player.h, player.y));
-    computer.y = Math.max(0, Math.min(CANVAS_H - computer.h, computer.y));
+    ball.x+=ball.vx; ball.y+=ball.vy;
+    if(ball.y-ball.r<=0||ball.y+ball.r>=CANVAS_H) ball.vy=-ball.vy;
+    if(ball.x-ball.r<=player.x+player.w && ball.y>=player.y && ball.y<=player.y+player.h){
+      ball.vx=Math.abs(ball.vx); ball.vy+= (ball.y-(player.y+player.h/2))*0.08;
+    }else if(ball.x-ball.r<0){ computerScore++; computerScoreEl.textContent=computerScore; resetBall(1);}
+    if(ball.x+ball.r>=computer.x && ball.y>=computer.y && ball.y<=computer.y+computer.h){
+      ball.vx=-Math.abs(ball.vx); ball.vy+= (ball.y-(computer.y+computer.h/2))*0.06;
+    }else if(ball.x+ball.r>CANVAS_W){ playerScore++; playerScoreEl.textContent=playerScore; resetBall(-1);}
+    computer.y+= Math.sign(ball.y-(computer.y+computer.h/2))*Math.min(3,Math.abs(ball.vy));
+    player.y=Math.max(0,Math.min(CANVAS_H-player.h,player.y));
+    computer.y=Math.max(0,Math.min(CANVAS_H-computer.h,computer.y));
   }
-
-  function frame(){
-    if(!running) return;
-    update();
-    draw();
-    rafId = requestAnimationFrame(frame);
-  }
-
+  function frame(){ if(!running) return; update(); draw(); rafId=requestAnimationFrame(frame);}
   function startGame(){
-    if(running) return;
-    running = true;
-    paused = false;
-    resetBall();
-    // ensure scores preserved; update scoreboard DOM
-    playerScoreEl.textContent = playerScore;
-    computerScoreEl.textContent = computerScore;
-    // Add input listeners
-    canvas.addEventListener('mousemove', onMouseMove);
-    canvas.addEventListener('touchmove', onTouchMove, {passive:false});
-    window.addEventListener('keydown', onKeyDown);
-    window.addEventListener('keyup', onKeyUp);
-    pauseBtn.addEventListener('click', togglePause);
+    if(running) return; running=true; paused=false; resetBall();
+    canvas.addEventListener('mousemove',e=>{player.y=e.offsetY-player.h/2;});
+    window.addEventListener('keydown',e=>{if(['w','W','ArrowUp'].includes(e.key))player.y-=12;if(['s','S','ArrowDown'].includes(e.key))player.y+=12;});
+    pauseBtn.onclick=()=>{paused=!paused; pauseBtn.textContent=paused?'Resume':'Pause'; if(!paused) frame();};
     frame();
   }
-
-  function stopGame(){
-    if(!running) return;
-    running = false;
-    cancelAnimationFrame(rafId);
-    // remove listeners so they don't act when not on the game page
-    canvas.removeEventListener('mousemove', onMouseMove);
-    canvas.removeEventListener('touchmove', onTouchMove);
-    window.removeEventListener('keydown', onKeyDown);
-    window.removeEventListener('keyup', onKeyUp);
-    pauseBtn.removeEventListener('click', togglePause);
-  }
-
-  function togglePause(){
-    paused = !paused;
-    pauseBtn.textContent = paused ? 'Resume' : 'Pause';
-    if(!paused) { /* ensure loop continues */ if(running) frame(); }
-  }
-
-  // Input handling
-  let keyState = {};
-  function onKeyDown(e){
-    keyState[e.key] = true;
-    // W/S and ArrowUp/ArrowDown control
-    if(e.key === 'w' || e.key === 'W' || e.key === 'ArrowUp') { player.y -= 12; }
-    if(e.key === 's' || e.key === 'S' || e.key === 'ArrowDown') { player.y += 12; }
-  }
-  function onKeyUp(e){
-    keyState[e.key] = false;
-  }
-
-  function onMouseMove(e){
-    const rect = canvas.getBoundingClientRect();
-    // y coordinate in canvas space
-    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-    player.y = y - player.h/2;
-  }
-  function onTouchMove(e){
-    e.preventDefault();
-    const rect = canvas.getBoundingClientRect();
-    const touch = e.touches[0];
-    const y = (touch.clientY - rect.top) * (canvas.height / rect.height);
-    player.y = y - player.h/2;
-  }
-
-  // ensure game stops if user switches away
-  document.addEventListener('visibilitychange', ()=> {
-    if(document.hidden) {
-      if(running) togglePause();
-    }
-  });
-
-  // Clean initial state: Home only
-  // (No About paragraph per request)
-  // Show nothing but home on load; game will start only when clicking Game
-  document.addEventListener('DOMContentLoaded', ()=>{
-    // hide pages initially
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    // keep About hidden; Home is just header/pic (no page)
-  });
-
-  // Expose small helpers for debugging in console
-  window._site = { startGame, stopGame, resetBall };
+  function stopGame(){ running=false; cancelAnimationFrame(rafId);}
+  document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));});
 </script>
 </body>
 </html>
