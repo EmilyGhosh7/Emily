@@ -11,24 +11,27 @@
       --light-bg:#fff5fa;
       --accent:#d65a94;
     }
-    html,body{height:100%; margin:0;}
     body{
       font-family: Arial, Helvetica, sans-serif;
       background: linear-gradient(135deg, var(--light-bg), #ffffff);
-      color:#222;
-      text-align:center;
+      margin:0; padding:0; text-align:center;
     }
-    header{ padding:26px 12px 6px; }
     h1{
-      margin:6px 0 14px;
+      margin:20px 0 10px;
       font-family: 'Great Vibes', cursive;
       font-size:48px;
       color:var(--accent);
     }
     .profile-pic{
-      width:200px; height:200px; border-radius:50%;
-      object-fit:cover; border:5px solid var(--pastel-pink);
-      display:block; margin: 8px auto 18px; background:#fff;
+      width:200px; height:200px;
+      border-radius:50%; object-fit:cover;
+      border:5px solid var(--pastel-pink);
+      display:block; margin: 8px auto 12px;
+      background:#fff;
+    }
+    .upload-btn {
+      margin: 10px auto 20px;
+      display: block;
     }
     .nav { margin: 10px 0 22px; }
     .btn {
@@ -39,125 +42,98 @@
       transition: transform .08s ease, background .12s;
     }
     .btn:hover{ transform: translateY(-2px); background:#f4bad6; }
-    .page {
-      display:none; max-width:860px; margin: 16px auto 40px;
-      background: #fff; border-radius:12px; padding:20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-      text-align:left;
-    }
+    .page { display:none; max-width:860px; margin: 16px auto 40px; background:#fff;
+      border-radius:12px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.06); text-align:left; }
     .page.active { display:block; }
     .page h2 { color: var(--accent); margin-top:0; }
-    #pong {
-      display:block; margin: 16px auto;
-      border-radius:8px; background:#fff;
-      border: 3px solid var(--pastel-pink);
-      max-width:100%; height:auto;
-    }
+    #pong { display:block; margin: 16px auto; border-radius:8px; background:#fff; border:3px solid var(--pastel-pink); }
     .controls { margin-top:12px; text-align:center; }
     .scoreboard { margin-top:10px; font-weight:700; color:var(--accent); }
-    .small { font-size:13px; color:#666; margin-top:6px; }
-    @media (max-width:520px){
-      h1{ font-size:36px; }
-      .profile-pic{ width:150px; height:150px; }
-      .btn{ padding:8px 12px; margin:6px; }
-    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Emily Ghosh</h1>
-    <img id="profileImg" class="profile-pic" src="20250324_122406_EA68BD.jpeg"
-         alt="Emily's profile picture"
-         onerror="this.onerror=null;this.src='profile.jpg'">
-  </header>
+  <h1>Emily Ghosh</h1>
 
+  <!-- Profile Picture -->
+  <img id="profileImg" class="profile-pic" src="profile.jpg" alt="Profile picture">
+  <input type="file" id="uploadPic" class="upload-btn" accept="image/*">
+
+  <!-- Navigation -->
   <div class="nav">
     <button class="btn" onclick="showPage('about')">About Emily</button>
     <button class="btn" onclick="showPage('game')">Ping Pong Game</button>
   </div>
 
-  <!-- About Emily page -->
-  <section id="about" class="page" aria-label="About Emily">
+  <!-- About Emily -->
+  <section id="about" class="page">
     <h2>About Emily</h2>
     <p>Hi I'm Emily, I like to play soccer, hockey, and tennis. I like elephants.</p>
   </section>
 
-  <!-- Game page -->
-  <section id="game" class="page" aria-label="Ping Pong Game">
+  <!-- Ping Pong Game -->
+  <section id="game" class="page">
     <h2>Ping Pong Game</h2>
-    <div class="scoreboard" aria-live="polite">
-      You: <span id="playerScore">0</span> &nbsp; — &nbsp; Computer: <span id="computerScore">0</span>
-    </div>
+    <div class="scoreboard">You: <span id="playerScore">0</span> — Computer: <span id="computerScore">0</span></div>
     <canvas id="pong" width="700" height="420"></canvas>
-    <div class="controls">
-      <button class="btn" id="pauseBtn">Pause</button>
-      <div class="small">Controls: mouse, touch, or W/S / Arrow keys</div>
-    </div>
+    <div class="controls"><button class="btn" id="pauseBtn">Pause</button></div>
   </section>
 
 <script>
+  // Switch pages
   function showPage(id){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    if(id === 'game') startGame();
-    else stopGame();
-    window.scrollTo({top:0, behavior:'smooth'});
+    if(id==='game') startGame(); else stopGame();
+    window.scrollTo(0,0);
   }
 
+  // Upload Profile Picture
+  const uploadInput = document.getElementById("uploadPic");
+  const profileImg = document.getElementById("profileImg");
+  uploadInput.addEventListener("change", e=>{
+    const file = e.target.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = ev => { profileImg.src = ev.target.result; };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Ping Pong Game
   const canvas = document.getElementById('pong');
   const ctx = canvas.getContext('2d');
-  const playerScoreEl = document.getElementById('playerScore');
-  const computerScoreEl = document.getElementById('computerScore');
-  const pauseBtn = document.getElementById('pauseBtn');
+  let player={x:10,y:150,w:12,h:90}, computer={x:canvas.width-22,y:150,w:12,h:90};
+  let ball={x:canvas.width/2,y:canvas.height/2,vx:4,vy:3,r:12};
+  let playerScore=0, computerScore=0, running=false, paused=false;
 
-  let running = false, rafId=null, paused=false;
-  const CANVAS_W=700, CANVAS_H=420, PADDLE_W=12, PADDLE_H=90, BALL_R=12;
-  let player={x:10,y:(CANVAS_H-PADDLE_H)/2,w:PADDLE_W,h:PADDLE_H};
-  let computer={x:CANVAS_W-PADDLE_W-10,y:(CANVAS_H-PADDLE_H)/2,w:PADDLE_W,h:PADDLE_H};
-  let ball={x:CANVAS_W/2,y:CANVAS_H/2,vx:4,vy:3,r:BALL_R};
-  let playerScore=0, computerScore=0;
+  document.addEventListener('keydown',e=>{
+    if(['ArrowUp','w','W'].includes(e.key)) player.y-=15;
+    if(['ArrowDown','s','S'].includes(e.key)) player.y+=15;
+  });
+  canvas.addEventListener('mousemove',e=>{player.y=e.offsetY-player.h/2;});
+  document.getElementById("pauseBtn").onclick=()=>{paused=!paused;if(!paused) frame();};
 
-  function resetBall(dir){
-    ball.x=CANVAS_W/2; ball.y=CANVAS_H/2;
-    ball.vx=4*(dir|| (Math.random()>0.5?1:-1));
-    ball.vy=(Math.random()*2+1)*(Math.random()>0.5?1:-1);
-  }
+  function resetBall(dir=1){ball.x=canvas.width/2;ball.y=canvas.height/2;ball.vx=4*dir;ball.vy=3;}
   function draw(){
-    ctx.fillStyle='#fff'; ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
-    ctx.fillStyle='rgba(214,90,148,0.06)';
-    for(let y=8;y<CANVAS_H;y+=20){ ctx.fillRect(CANVAS_W/2-1,y,2,12);}
-    ctx.fillStyle='#f4bad6'; ctx.fillRect(player.x,player.y,player.w,player.h);
-    ctx.fillStyle='#888'; ctx.fillRect(computer.x,computer.y,computer.w,computer.h);
-    ctx.beginPath(); ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
-    ctx.fillStyle='#f7f75c'; ctx.fill();
-    ctx.lineWidth=2; ctx.strokeStyle='#fff';
-    ctx.beginPath(); ctx.arc(ball.x-2,ball.y,ball.r-3,0.5,Math.PI+0.5); ctx.stroke();
-    ctx.beginPath(); ctx.arc(ball.x+2,ball.y,ball.r-3,-0.5,Math.PI-0.5); ctx.stroke();
+    ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#f4bad6";ctx.fillRect(player.x,player.y,player.w,player.h);
+    ctx.fillStyle="#888";ctx.fillRect(computer.x,computer.y,computer.w,computer.h);
+    ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fillStyle="#f7f75c";ctx.fill();
+    ctx.lineWidth=2;ctx.strokeStyle="#fff";ctx.stroke();
   }
   function update(){
     if(paused) return;
-    ball.x+=ball.vx; ball.y+=ball.vy;
-    if(ball.y-ball.r<=0||ball.y+ball.r>=CANVAS_H) ball.vy=-ball.vy;
-    if(ball.x-ball.r<=player.x+player.w && ball.y>=player.y && ball.y<=player.y+player.h){
-      ball.vx=Math.abs(ball.vx); ball.vy+= (ball.y-(player.y+player.h/2))*0.08;
-    }else if(ball.x-ball.r<0){ computerScore++; computerScoreEl.textContent=computerScore; resetBall(1);}
-    if(ball.x+ball.r>=computer.x && ball.y>=computer.y && ball.y<=computer.y+computer.h){
-      ball.vx=-Math.abs(ball.vx); ball.vy+= (ball.y-(computer.y+computer.h/2))*0.06;
-    }else if(ball.x+ball.r>CANVAS_W){ playerScore++; playerScoreEl.textContent=playerScore; resetBall(-1);}
-    computer.y+= Math.sign(ball.y-(computer.y+computer.h/2))*Math.min(3,Math.abs(ball.vy));
-    player.y=Math.max(0,Math.min(CANVAS_H-player.h,player.y));
-    computer.y=Math.max(0,Math.min(CANVAS_H-computer.h,computer.y));
+    ball.x+=ball.vx;ball.y+=ball.vy;
+    if(ball.y-ball.r<0||ball.y+ball.r>canvas.height) ball.vy=-ball.vy;
+    if(ball.x-ball.r<player.x+player.w && ball.y>player.y && ball.y<player.y+player.h){ball.vx=Math.abs(ball.vx);}
+    if(ball.x+ball.r>computer.x && ball.y>computer.y && ball.y<computer.y+computer.h){ball.vx=-Math.abs(ball.vx);}
+    if(ball.x<0){computerScore++;document.getElementById("computerScore").textContent=computerScore;resetBall(1);}
+    if(ball.x>canvas.width){playerScore++;document.getElementById("playerScore").textContent=playerScore;resetBall(-1);}
+    computer.y+=Math.sign(ball.y-(computer.y+computer.h/2))*3;
   }
-  function frame(){ if(!running) return; update(); draw(); rafId=requestAnimationFrame(frame);}
-  function startGame(){
-    if(running) return; running=true; paused=false; resetBall();
-    canvas.addEventListener('mousemove',e=>{player.y=e.offsetY-player.h/2;});
-    window.addEventListener('keydown',e=>{if(['w','W','ArrowUp'].includes(e.key))player.y-=12;if(['s','S','ArrowDown'].includes(e.key))player.y+=12;});
-    pauseBtn.onclick=()=>{paused=!paused; pauseBtn.textContent=paused?'Resume':'Pause'; if(!paused) frame();};
-    frame();
-  }
-  function stopGame(){ running=false; cancelAnimationFrame(rafId);}
-  document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));});
+  function frame(){if(!running)return;update();draw();requestAnimationFrame(frame);}
+  function startGame(){if(running)return;running=true;paused=false;resetBall();frame();}
+  function stopGame(){running=false;}
 </script>
 </body>
 </html>
