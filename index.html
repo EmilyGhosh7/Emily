@@ -60,8 +60,7 @@
     .page.active { display:block; }
     #pong { display:block; margin:16px auto; background:#fff; border:3px solid #f8cde0; }
     .scoreboard { margin-top:10px; font-weight:700; color:#d65a94; }
-    /* TikTok embeds */
-    .tiktok-embed { margin-bottom: 20px; }
+    .tiktok-embed { margin: 20px auto; }
   </style>
 </head>
 <body>
@@ -93,16 +92,16 @@
 
   <section id="tiktok" class="page">
     <h2>Emily's TikTok Feed</h2>
-    <!-- Example TikTok Embeds (replace URLs with ones you like) -->
-    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@scout2015/video/6718335390845095173" data-video-id="6718335390845095173" style="max-width: 605px;min-width: 325px;">
-      <section></section>
-    </blockquote>
-
-    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@nba/video/7262127647253499182" data-video-id="7262127647253499182" style="max-width: 605px;min-width: 325px;">
+    <!-- Your TikTok Video -->
+    <blockquote class="tiktok-embed"
+      cite="https://www.tiktok.com/@americanhighshorts/video/7210865509493935403"
+      data-video-id="7210865509493935403"
+      style="max-width: 605px;min-width: 325px;">
       <section></section>
     </blockquote>
   </section>
 
+  <!-- TikTok embed script -->
   <script async src="https://www.tiktok.com/embed.js"></script>
 
   <script>
@@ -119,7 +118,7 @@
         reader.readAsDataURL(file);
       }
     });
-    // Simple Pong (fixed paddle movement)
+    // Simple Pong
     const canvas=document.getElementById('pong');const ctx=canvas.getContext('2d');
     let player={x:10,y:150,w:12,h:90},computer={x:canvas.width-22,y:150,w:12,h:90};
     let ball={x:canvas.width/2,y:canvas.height/2,vx:4,vy:3,r:10};let playerScore=0,computerScore=0;
